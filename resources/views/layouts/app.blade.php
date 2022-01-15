@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+        <title>{{ config('app.name', 'CuciMobil') }}</title>
 
         @isset($meta)
             {{ $meta }}
@@ -19,13 +19,12 @@
         <link rel="stylesheet" href="{{ asset('stisla/css/components.css') }}">
         <link rel="stylesheet" href="{{ asset('vendor/notyf/notyf.min.css') }}">
         <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-
+        
         <link rel="stylesheet" href="https://kit-free.fontawesome.com/releases/latest/css/free-v4-shims.min.css" media="all">
         <link rel="stylesheet" href="https://kit-free.fontawesome.com/releases/latest/css/free-v4-font-face.min.css" media="all">
         <link rel="stylesheet" href="https://kit-free.fontawesome.com/releases/latest/css/free.min.css" media="all">
-
         <livewire:styles />
-
+        @stack('css')
         <!-- Scripts -->
         <script defer src="{{ asset('vendor/alpine.js') }}"></script>
     </head>
@@ -72,12 +71,14 @@
         <script src="{{ asset('stisla/js/stisla.js') }}"></script>
         <script src="{{ asset('stisla/js/scripts.js') }}"></script>
 
+        
         <livewire:scripts />
         <script src="{{ mix('js/app.js') }}" defer></script>
-
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment-with-locales.min.js"></script>
         @isset($script)
             {{ $script }}
         @endisset
         @include('sweetalert::alert')
+        @stack('js')
     </body>
 </html>

@@ -17,6 +17,7 @@ class Main extends Component
     public $sortField = "id";
     public $sortAsc = false;
     public $search = '';
+    public $status = '';
 
     protected $listeners = [ "deleteItem" => "delete_item" ];
 
