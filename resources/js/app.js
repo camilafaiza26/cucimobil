@@ -1,4 +1,6 @@
 require('./bootstrap');
+import moment  from "moment";
+
 
 function dataTableController (id) {
     return {

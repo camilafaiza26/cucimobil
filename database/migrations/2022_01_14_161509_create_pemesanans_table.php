@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePemesanasTable extends Migration
+class CreatePemesanansTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreatePemesanasTable extends Migration
      */
     public function up()
     {
-        Schema::create('pemesanas', function (Blueprint $table) {
+        Schema::create('pemesanans', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('pelanggan_id')->unsigned()->index();
             $table->foreign('pelanggan_id')->references('id')->on('pelanggans')->onDelete('cascade');
@@ -37,6 +37,6 @@ class CreatePemesanasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pemesanas');
+        Schema::dropIfExists('pemesanans');
     }
 }

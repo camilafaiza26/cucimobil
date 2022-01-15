@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Component;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -88,6 +89,11 @@ class CreateUser extends Component
 
     public function render()
     {
+        if(Auth::user()->isDirectur == 1){
         return view('livewire.create-user');
+        }
+        else{
+            return view('403');
+        }
     }
 }

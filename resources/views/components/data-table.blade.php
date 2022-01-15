@@ -1,14 +1,14 @@
 <div class="bg-gray-100 text-gray-900 tracking-wider leading-normal">
     <div class="p-8 pt-4 mt-2 bg-white" x-data="window.__controller.dataTableMainController()" x-init="setCallback();">
         <div class="flex pb-4 -ml-3">
-            <a href="{{ $data->href->create_new }}"  class="-ml- btn btn-primary shadow-none">
+            <a href="{{ $data->href->create_new }}"  class="-ml- btn btn-primary shadow-none" id="buttonAdd">
                 <span class="fas fa-plus"></span> {{ $data->href->create_new_text }}
             </a>
-            <a href="{{ $data->href->export }}" class="ml-2 btn btn-success shadow-none">
+            <a href="{{ $data->href->export }}" class="ml-2 btn btn-success shadow-none" id="buttonExport" >
                 <span class="fas fa-file-export"></span> {{ $data->href->export_text }}
             </a>
-        </div>
 
+        </div>
         <div class="row mb-4">
             <div class="col form-inline">
                 Per Page: &nbsp;
@@ -17,10 +17,19 @@
                     <option>15</option>
                     <option>25</option>
                 </select>
+                <div class="col form-inline" id="status_pembayaran">
+                    <select wire:model="status" class="form-control">
+                        <option  selected >Status Pembayaran</option>
+                        <option value="1">Sudah Bayar</option>
+                        <option value="0">Belum Bayar</option>
+                    </select>
+                </div>
+                
             </div>
-
+            
+            
             <div class="col">
-                <input wire:model="search" class="form-control" type="text" placeholder="Search...">
+                <input wire:model="search" class="form-control" type="text" placeholder="Cari...">
             </div>
         </div>
 

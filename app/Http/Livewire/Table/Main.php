@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Table;
 
+use App\Models\Pemesanan;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Traits\WithDataTable;
@@ -17,7 +18,11 @@ class Main extends Component
     public $sortField = "id";
     public $sortAsc = false;
     public $search = '';
+    public $status = '';
+    public $bayarPemesanan = false;
+    public $pelangganId;
 
+   
     protected $listeners = [ "deleteItem" => "delete_item" ];
 
     public function sortBy($field)
@@ -52,8 +57,14 @@ class Main extends Component
 
     public function render()
     {
+     
         $data = $this->get_pagination_data();
-
+        $this->bayarPemesanan = false;
         return view($data['view'], $data);
+    }
+
+    public function bayarPemesanan($id)
+    {
+        $this->bayarPemesanan = true;
     }
 }
