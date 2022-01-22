@@ -18,47 +18,29 @@
         </div>
        
         <div class="form-group col-span-6 sm:col-span-5 ">
-            <x-jet-label for="harga" value="{{ __('Harga Paket') }}" />
-            <x-jet-input id="harga" type="text" class="mt-1 block w-full form-control shadow-none" wire:model.defer="paket.harga" placeholder="Masukkan harga paket" />
-            <x-jet-input-error for="paket.harga" class="mt-2" />
+            <x-jet-label for="diskon" value="{{ __('Diskon Paket') }}" />
+            <x-jet-input id="diskon" type="text" class="mt-1 block w-full form-control shadow-none" wire:model.defer="paket.diskon" placeholder="Masukkan diskon paket" />
+            <x-jet-input-error for="paket.diskon" class="mt-2" />
+
         </div>
-
-        <div class="form-group col-span-6 sm:col-span-5">
-                <x-jet-label for="jenis_id" value="{{ __('Masukkan Jenis') }}" />
-                <select id="jenis_id" class="form-select block w-full mt-1" wire:model.defer="paket.jenis_id" required>
-                <option hidden selected>--- Pilih Jenis ---</option>
-                @foreach ($jeniss as $jenis)
-                <option value="{{$jenis->id}}" >
-                   {{$jenis->nama_jenis}}
-                </option>
-                @endforeach
-            </select>
-            </div>
-
-            <button class="btn text-white btn-info btn-sm" wire:click.prevent="add({{$i}})">Add</button>
-          
-
-
-        <div class="form-group col-span-6 sm:col-span-5">
-                <x-jet-label for="layanan_id" value="{{ __('Masukkan Layanan') }}" />
-                 @foreach($inputs as $key => $value)
-                <select id="layanan_id" class="form-select" wire:model.defer="paket.layanan_id.{{$value}}" required>
-                <option hidden selected>--- Pilih Layanan ---</option>
-                @foreach ($layanans as $layanan)
-                <option value="{{$layanan->id}}" >
-                   {{$layanan->nama_layanan}}
-                </option>
-                @endforeach
-            </select>
+        <button class=" btn text-white btn-info btn-sm mr-2" wire:click.prevent="add({{$i}})"><i class="fas fa-plus"></i></button>
+        @foreach($inputs as $key => $value)
+                    <select id="layanan_id" class="col-span-5 sm:col-span-4 form-select rounded-md shadow-sm mt-1 block w-full" wire:model.defer="paket.layanan_id.{{$value}}" required>
+                    <option hidden selected>--- Pilih Layanan ---</option>
+                    @foreach ($layanans as $layanan)
+                    <option value="{{$layanan->id}}" >
+                       {{$layanan->nama_layanan}} ({{$layanan->nama_jenis}})
+                    </option>
+                    @endforeach
+                </select>
+        
+                <div class="flex col-span-2 items-center" >
+                    <button class=" btn text-white btn-info btn-sm mr-2" wire:click.prevent="add({{$i}})"><i class="fas fa-plus"></i></button>
+                    <button class=" btn text-white btn-info btn-sm" wire:click.prevent="remove({{$i}})"><i class="fas fa-minus"></i></button>
+                </div>
+             
+            
             @endforeach
-            </div>
-
-        
-
-        
-    </div>
-
-
         </x-slot>
 
         <x-slot name="actions">

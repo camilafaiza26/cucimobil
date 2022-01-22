@@ -16,12 +16,13 @@ $links = [
         "href" => "pemesanan",
         "text" => "Pemesanan",  
         "is_multi" => false,
-        "icon" => "fas fa-fire"
+        "icon" => "fas fa-shopping-cart"
     ],
     [
         "href" => [
             [
                 "section_text" => "Data Master",
+                "icon" => "fas fa-database",
                 "section_list" => [
                     ["href" => "jenis", "text" => "Jenis Mobil"],
                     ["href" => "merek", "text" => "Merek Mobil"],
@@ -31,13 +32,23 @@ $links = [
             ]
         ],
         "text" => "Data Master",
+     
         "is_multi" => true,
     ],
     [
-        "href" => "dashboard",
+        "href" => [
+            [
+                "section_text" => "Laporan",
+                "icon" => "fas fa-book",
+                "section_list" => [
+                    ["href" => "laporanharian", "text" => "Laporan Harian"],
+                    ["href" => "merek", "text" => "Laporan Bulanan"],
+                ]
+            ]
+        ],
         "text" => "Laporan",
-        "is_multi" => false,
-        "icon" => "fas fa-book"
+      
+        "is_multi" => true,
     ],
     [
         "href" => "user",
@@ -53,11 +64,11 @@ $navigation_links = array_to_object($links);
 <div class="main-sidebar">
     <aside id="sidebar-wrapper">
         <div class="sidebar-brand">
-            <a href="{{ route('dashboard') }}">Dashboard</a>
+            <a href="{{ route('dashboard') }}"><img class="ml-5 mt-3"src="<?php echo asset('assets/img/logo.svg')?> " alt="Logo"></a>
         </div>
         <div class="sidebar-brand sidebar-brand-sm">
             <a href="{{ route('dashboard') }}">
-                <img class="d-inline-block" width="32px" height="30.61px" src="" alt="">
+                <img class="d-inline-block" width="32px" height="30.61px" src="assets/img/logo.svg" alt="Cuci Mobil">
             </a>
         </div>
         @foreach ($navigation_links as $link)
@@ -78,7 +89,7 @@ $navigation_links = array_to_object($links);
                     @endphp
 
                     <li class="dropdown {{ ($is_active) ? 'active' : '' }}">
-                        <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-database"></i> <span>{{ $section->section_text }}</span></a>
+                        <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="{{$section->icon}}"></i> <span>{{ $section->section_text }}</span></a>
                         <ul class="dropdown-menu">
                             @foreach ($section->section_list as $child)
                                 <li class="{{ Request::routeIs($child->href) ? 'active' : '' }}"><a class="nav-link" href="{{ route($child->href) }}">{{ $child->text }}</a></li>

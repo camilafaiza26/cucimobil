@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Jenis;
 use App\Models\Layanan;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Component;
@@ -67,6 +68,10 @@ class CreateLayanan extends Component
 
     public function render()
     {
-        return view('livewire.create-layanan');
+        return view('livewire.create-layanan', [
+          
+            'jeniss' => Jenis::all(),
+            
+        ]);
     }
 }

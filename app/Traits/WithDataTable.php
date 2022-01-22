@@ -44,11 +44,13 @@ trait WithDataTable {
                         ])
                     ];
                     case 'riwayat':
-                        $nama =   $this->model::select('nama') ->where('pelanggans.id', $this->pelangganId)->first();
+                        $nama =   $this->model::select('*') ->where('pelanggans.id', $this->pelangganId)->first();
                         $pelanggans = $this->model::search($this->search)
-                            ->select('pelanggans.id','pemesanans.plat', 'pakets.nama_paket')
+                            ->select('pelanggans.id','pemesanans.plat', 'pakets.nama_paket', 'mereks.nama_merek','pemesanans.tanggal_pemesanan', 'jenis_mobils.nama_jenis','pemesanans.status_bayar')
                             ->join('pemesanans', 'pemesanans.pelanggan_id', '=','pelanggans.id' )
                             ->join('pakets', 'pemesanans.paket_id', '=','pakets.id' )
+                            ->join('jenis_mobils', 'pakets.jenis_id', '=','jenis_mobils.id' )
+                            ->join('mereks', 'pemesanans.merek_id', '=','mereks.id' )
                             ->where('pelanggans.id', $this->pelangganId)
                             ->orderBy($this->sortField, $this->sortAsc ? 'asc' : 'desc')
                             ->paginate($this->perPage);
@@ -69,10 +71,10 @@ trait WithDataTable {
                     break;
                     case 'pemesanan':
                         $pemesanans = $this->model::search($this->search)
-                            ->select('pemesanans.*', 'pelanggans.nama', 'pakets.nama_paket', 'mereks.nama_merek')
+                            ->select('pemesanans.*', 'pelanggans.nama', 'pakets.nama_paket', 'mereks.nama_merek', 'pakets.harga_paket', 'pemesanans.paket_id')
                             ->join('pelanggans', 'pelanggans.id','=','pemesanans.pelanggan_id')
-                            ->join('pakets', 'pakets.id','=','pemesanans.paket_id')
                             ->join('mereks', 'mereks.id','=','pemesanans.merek_id')
+                            ->join('pakets', 'pakets.id','=','pemesanans.paket_id')
                             ->orderBy($this->sortField, $this->sortAsc ? 'asc' : 'desc')
                             ->where('status_bayar', $this->status)
                             ->paginate($this->perPage);
@@ -128,6 +130,8 @@ trait WithDataTable {
                                 break;
                             case 'layanan':
                                 $layanans = $this->model::search($this->search)
+                                ->select('layanans.*', 'jenis_mobils.nama_jenis')
+                                ->join('jenis_mobils', 'jenis_mobils.id' , '=', 'layanans.jenis_id')
                                     ->orderBy($this->sortField, $this->sortAsc ? 'asc' : 'desc')
                                     ->paginate($this->perPage);
                 
@@ -146,7 +150,7 @@ trait WithDataTable {
                                 break;
                             case 'paket':
                                 $pakets = $this->model::search($this->search)
-                                    ->with('detail_paket')
+                                
                                     ->orderBy($this->sortField, $this->sortAsc ? 'asc' : 'desc')
                                     ->paginate($this->perPage);
                 
@@ -163,6 +167,16 @@ trait WithDataTable {
                                     ])
                                 ];
                                 break;
+                                case 'harian':
+                                    $harians = $this->model::search($this->search)
+                                        ->orderBy($this->sortField, $this->sortAsc ? 'asc' : 'desc')
+                                        ->paginate($this->perPage);
+                    
+                                    return [
+                                        "view" => 'livewire.table.harian',
+                                        "harians" => $harians,
+                                    ];
+                                    break;
 
             default:
                 # code...

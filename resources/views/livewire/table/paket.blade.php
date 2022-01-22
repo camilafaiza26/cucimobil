@@ -3,20 +3,24 @@
         <x-slot name="head">
             <tr>
                 <th><a wire:click.prevent="sortBy('id')" role="button" href="#">
-                    ID
+                    No
                     @include('components.sort-icon', ['field' => 'id'])
                 </a></th>
                 <th><a wire:click.prevent="sortBy('nama_paket')" role="button" href="#">
                     Nama Paket
                     @include('components.sort-icon', ['field' => 'nama_paket'])
                 </a></th>
-                <th><a wire:click.prevent="sortBy('harga')" role="button" href="#">
+                <th><a wire:click.prevent="sortBy('diskon')" role="button" href="#">
+                    Diskon
+                    @include('components.sort-icon', ['field' => 'diskon'])
+                </a></th>
+                <th><a wire:click.prevent="sortBy('harga_paket')" role="button" href="#">
                     Harga Paket
-                    @include('components.sort-icon', ['field' => 'harga'])
+                    @include('components.sort-icon', ['field' => 'harga_paket'])
                 </a></th>
                 <th>
                     Layanan  
-                </a></th>
+                </th>
                
                 <th>Action</th>
             </tr>
@@ -26,11 +30,12 @@
                 <tr x-data="window.__controller.dataTableController({{ $paket->id }})">
                     <td>{{ $loop->iteration }}</td>
                     <td>{{ $paket->nama_paket }}</td>
-                    <td>{{ $paket->harga }}</td>
-                    <td class="px-6 py-4 text-sm text-gray-900">
-                                    @foreach ($paket->detail_paket as $detail_paket)
+                    <td>{{ $paket->diskon }}%</td>
+                    <td>Rp{{ number_format($paket->harga_paket,2,',','.')}}</td>
+                    <td class="px-6 py-4 text-sm text-gray-900 text-center">
+                                    @foreach ($paket->layanan as $detail_paket)
                                     <span class="bg-gray-200 text-xs font-normal px-2 py-px border rounded-full inline-flex my-px">
-                                        {{ $detail_paket->layanan_id }}
+                                        {{ $detail_paket->nama_layanan }}
                                     </span>
                                 @endforeach
                                 </td>
@@ -44,3 +49,8 @@
         </x-slot>
     </x-data-table>
 </div>
+<script>
+    document.getElementById("status_pembayaran").remove();
+    document.getElementById("buttonExport").remove();
+    
+  </script>

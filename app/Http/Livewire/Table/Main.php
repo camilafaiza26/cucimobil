@@ -2,14 +2,19 @@
 
 namespace App\Http\Livewire\Table;
 
+use App\Models\Layanan;
+use App\Models\Layanan_Paket;
+use App\Models\Paket;
 use App\Models\Pemesanan;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Traits\WithDataTable;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class Main extends Component
 {
     use WithPagination, WithDataTable;
+    
 
     public $model;
     public $name;
@@ -18,10 +23,14 @@ class Main extends Component
     public $sortField = "id";
     public $sortAsc = false;
     public $search = '';
-    public $status = '';
-    public $bayarPemesanan = false;
+    public $status;
+    public $bayarPesanan = false;
     public $pelangganId;
-
+    public $harga;
+    public $hargaM;
+    public $lihatPaket = false;
+    public $namaPaket = null;
+    public $layananPaket = null;
    
     protected $listeners = [ "deleteItem" => "delete_item" ];
 
@@ -63,8 +72,44 @@ class Main extends Component
         return view($data['view'], $data);
     }
 
-    public function bayarPemesanan($id)
+    public function lihatPaket($paket_id)
     {
-        $this->bayarPemesanan = true;
+
+        $this->lihatPaket = $paket_id;
+        $this->namaPaket = Paket::find($paket_id)->get();
+        $this->layananPaket = Layanan_Paket::select('layanans.nama_layanan','layanans.harga','jenis_mobils.nama_jenis')
+        ->join('layanans', 'layanans.id', 'layanan_paket.layanan_id')
+        ->join('jenis_mobils', 'jenis_mobils.id', 'layanans.jenis_id')
+        ->where('layanan_paket.paket_id', $paket_id)->get();
+    }
+
+
+
+    public function bayarPesanan($id, $harga)
+    {
+        $this->bayarPesanan = $id;
+        $this->hargaM = $harga;
+    }
+
+    protected function getRules()
+    {
+        
+        return ([
+            'harga' => 'required|numeric',
+        ]);
+    }
+
+
+    public function updateBayar($bayarPesanan){
+        $this->resetErrorBag();
+        $this->validate();
+        if($this->hargaM == $this->harga){
+            
+        }
+        else{
+            
+
+        }
+        $this->reset('harga');
     }
 }

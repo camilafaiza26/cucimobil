@@ -13,7 +13,7 @@ use Laravel\Sanctum\HasApiTokens;
 use App\Models\Paket;use Carbon\Carbon;
 
 
-class Detail_Paket extends Authenticatable
+class Layanan_Paket extends Authenticatable
 {
     
     /**
@@ -22,18 +22,14 @@ class Detail_Paket extends Authenticatable
      * @var array
      * 
      */
+    protected $primaryKey = 'id_detail_paket';
     public $timestamps = false;
-    protected $table = 'detail_pakets';
+    protected $table = 'layanan_paket';
     protected $fillable = [
         'layanan_id', 'paket_id'
     ];
 
-    public function paket()
-    {
-        return $this->belongsTo(Paket::class)
-        ->join('layanans', 'layanans.id', '=', 'pakets.layanan_id');
-    }
-   
+ 
 
 
 }

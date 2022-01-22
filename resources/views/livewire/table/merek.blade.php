@@ -3,7 +3,7 @@
         <x-slot name="head">
             <tr>
                 <th><a wire:click.prevent="sortBy('id')" role="button" href="#">
-                    ID
+                    No
                     @include('components.sort-icon', ['field' => 'id'])
                 </a></th>
                 <th><a wire:click.prevent="sortBy('nama_merek')" role="button" href="#">
@@ -28,3 +28,8 @@
         </x-slot>
     </x-data-table>
 </div>
+<script>
+    document.getElementById("status_pembayaran").remove();
+    document.getElementById("buttonExport").remove();
+    
+  </script>

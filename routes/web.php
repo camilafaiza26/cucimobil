@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\JenisController;
+use App\Http\Controllers\LaporanHarianController;
 use App\Http\Controllers\LayananController;
 use App\Http\Controllers\MerekController;
 use App\Http\Controllers\PelangganController;
@@ -8,6 +9,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\PaketController;
 use App\Http\Livewire\Users;
 use App\Http\Controllers\PemesananController;
+use App\Http\Livewire\LaporanHarian;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -38,9 +40,12 @@ Route::group([ "middleware" => ['auth:sanctum', 'verified'] ], function() {
     Route::get('/pelanggan/riwayat/{pelangganId}',[ PelangganController::class, "riwayat_view"])->name('pelanggan.riwayat');
 
     Route::get('/pemesanan', [ PemesananController::class, "index_view" ])->name('pemesanan');
-    Route::view('/pemesanan/bayar/{pemesananId}', "livewire.bayar");
+    Route::get('/pemesanan/bayar/{pemesananId}',  [ PemesananController::class, "bayar_view" ])->name('bayar');
     Route::view('/pemesanan/new', "pages.user.pemesanan-new")->name('pemesanan.new');
     Route::view('/pemesanan/edit/{pemesananId}', "pages.user.pemesanan-edit")->name('pemesanan.edit');
+    Route::get('/pemesanan/bayar/{pemesananId}/konfirmasi',  [ PemesananController::class, "konfirmasi_view" ])->name('bayar.konfirmasi');
+    Route::get('/pemesanan/bayar/{pemesananId}/konfirmasi/iya', [ PemesananController::class, "konfirmasi_iya" ] )->name('bayar.iya');
+    Route::get('/cetakstruk/{pemesananId}', [ PemesananController::class, "cetak_struk" ] )->name('cetak.struk');
 
     Route::get('/jenis_mobil', [ JenisController::class, "index_view" ])->name('jenis');
     Route::view('/jenis/new', "pages.user.jenis-new")->name('jenis.new');
@@ -59,4 +64,6 @@ Route::group([ "middleware" => ['auth:sanctum', 'verified'] ], function() {
     Route::view('/paket/edit/{paketId}', "pages.user.paket-edit")->name('paket.edit');
 
 
+    //Laporan
+    Route::get('/laporanharian', [LaporanHarianController::class, "index_view"])->name('laporanharian');
 });

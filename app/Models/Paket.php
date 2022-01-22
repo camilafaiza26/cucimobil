@@ -25,7 +25,7 @@ class Paket extends Authenticatable
     public $timestamps = false;
 
     protected $fillable = [
-        'nama_paket', 'jenis_id', 'harga'
+        'nama_paket', 'diskon' ,'harga_paket'
     ];
 
     public static function search($query)
@@ -34,9 +34,8 @@ class Paket extends Authenticatable
             : static::where('nama_paket', 'like', '%'.$query.'%');
     }
 
-    public function detail_paket()
-    {
-        return $this->hasMany(Detail_Paket::class, 'paket_id');
-    }
+   public function layanan(){
+       return $this->belongsToMany(Layanan::class);
+   }
 
 }

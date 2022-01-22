@@ -1,6 +1,7 @@
 <div class="bg-gray-100 text-gray-900 tracking-wider leading-normal">
     <div class="p-8 pt-4 mt-2 bg-white" x-data="window.__controller.dataTableMainController()" x-init="setCallback();">
         <div class="flex pb-4 -ml-3">
+           
             <a href="{{ $data->href->create_new }}"  class="-ml- btn btn-primary shadow-none" id="buttonAdd">
                 <span class="fas fa-plus"></span> {{ $data->href->create_new_text }}
             </a>
@@ -19,9 +20,9 @@
                 </select>
                 <div class="col form-inline" id="status_pembayaran">
                     <select wire:model="status" class="form-control">
-                        <option  selected >Status Pembayaran</option>
-                        <option value="1">Sudah Bayar</option>
                         <option value="0">Belum Bayar</option>
+                        <option value="1">Sudah Bayar</option>
+                       
                     </select>
                 </div>
                 
@@ -35,8 +36,8 @@
 
         <div class="row">
             <div class="table-responsive">
-                <table class="table table-bordered table-striped text-sm text-gray-600">
-                    <thead>
+                <table class="table table-bordered table-striped text-sm text-gray-600 ">
+                    <thead class="text-center">
                         {{ $head }}
                     </thead>
                     <tbody>

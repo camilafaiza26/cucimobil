@@ -25,6 +25,8 @@
         <link rel="stylesheet" href="https://kit-free.fontawesome.com/releases/latest/css/free-v4-shims.min.css" media="all">
         <link rel="stylesheet" href="https://kit-free.fontawesome.com/releases/latest/css/free-v4-font-face.min.css" media="all">
         <link rel="stylesheet" href="https://kit-free.fontawesome.com/releases/latest/css/free.min.css" media="all">
+
+     
         <livewire:styles />
         @stack('css')
         <!-- Scripts -->
@@ -72,7 +74,7 @@
 
         <script src="{{ asset('stisla/js/stisla.js') }}"></script>
         <script src="{{ asset('stisla/js/scripts.js') }}"></script>
-
+ 
         
         <livewire:scripts />
         <script src="{{ mix('js/app.js') }}" defer></script>
@@ -81,6 +83,7 @@
             {{ $script }}
         @endisset
         @include('sweetalert::alert')
+       
         @stack('js')
     </body>
 </html>

@@ -1,6 +1,8 @@
 <div>
     <x-data-table :data="$data" :model="$users">
+        
         <x-slot name="head">
+            
             <tr>
                 <th><a wire:click.prevent="sortBy('id')" role="button" href="#">
                     No
@@ -42,9 +44,9 @@
                     <td>{{ $user->email }}</td>
                     <td>{{ $user->nohp}}</td>
                     @if ($user->isDirectur == 1)
-                         <td>Direktur</td>   
+                         <td class="text-center"><span class="px-3 py-2 bg-red-600 text-white rounded-full"> Direktur </span> </td>   
                     @else 
-                    <td>Pegawai</td>
+                    <td class="text-center" ><span class="px-3 py-2 bg-blue-600 text-white rounded-full"> Pegawai </span> </td>
                     @endif
                     <td>{{ $user->alamat}}</td>
                     <td class="whitespace-no-wrap row-action--icon forDirectur">
@@ -62,8 +64,8 @@
   </script>
   @if (Auth::user()->isDirectur == 0)
   <script>
-    document.getElementById("buttonAdd").style.visibility="hidden";
-    document.getElementById("buttonExport").style.visibility="hidden";
+    document.getElementById("buttonAdd").remove();
+    document.getElementById("buttonExport").remove();
     $('table tr').find('td:eq(7),th:eq(7)').remove();
 
   </script>

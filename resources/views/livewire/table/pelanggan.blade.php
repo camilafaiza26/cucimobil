@@ -33,7 +33,7 @@
                     <td>{{ $pelanggan->nohp}}</td>
                     <td>{{ $pelanggan->alamat}}</td>
                     <td>{{ $pelanggan->created_at->format('d M Y H:i') }}</td>
-                    <td class="whitespace-no-wrap row-action--icon">
+                    <td class="whitespace-no-wrap row-action--icon text-center">
                         <a role="button" href="/pelanggan/edit/{{ $pelanggan->id }}" class="mr-3"><i class="fa fa-16px fa-pen"></i></a>
                         <a role="button" href="/pelanggan/riwayat/{{ $pelanggan->id }}" class="mr-3"><i class="fa fa-16px fa-eye"></i></a>
                         <a role="button" x-on:click.prevent="deleteItem" href="#"><i class="fa fa-16px fa-trash text-red-500"></i></a>

@@ -16,9 +16,8 @@ class CreatePaketsTable extends Migration
         Schema::create('pakets', function (Blueprint $table) {
             $table->id();
             $table->string('nama_paket');
-            $table->bigInteger('jenis_id')->unsigned()->index();
-            $table->foreign('jenis_id')->references('id')->on('jenis_mobils')->onDelete('cascade');
-            $table->double('harga');
+            $table->integer('diskon');
+            $table->integer('harga_paket');
             $table->timestamps();
         });
     }

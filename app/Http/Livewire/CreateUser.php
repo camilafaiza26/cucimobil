@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Component;
 use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Validation\Rule;
 
 class CreateUser extends Component
 {
@@ -27,8 +28,8 @@ class CreateUser extends Component
 
         return array_merge([
             'user.name' => 'required|min:3',
-            'user.email' => 'required|email|unique:users,email',
-            'user.username' => 'required|unique:users,username',
+            'user.email' => 'required|email|unique:users,email,' . $this->userId,
+            'user.username' => 'required|unique:users,username,' .$this->userId,
             'user.nohp' => 'required|max:20',
             'user.alamat' => 'required|max:250'
         ], $rules);

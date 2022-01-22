@@ -22,12 +22,20 @@ class Layanan extends Authenticatable
     protected $table = 'layanans';
     protected $fillable = [
         'nama_layanan',
+        'harga',
+        'jenis_id',
     ];
 
     
     public static function search($query)
     {
         return empty($query) ? static::query()
-            : static::where('nama_layanan', 'like', '%'.$query.'%');
+            : static::where('nama_layanan', 'like', '%'.$query.'%')
+            ->orWhere('nama_jenis', 'like', '%'.$query.'%')
+            ->orWhere('harga', 'like', '%'.$query.'%');
+    }
+
+    public function paket(){
+        return $this->belongsToMany(Paket::class);
     }
 }

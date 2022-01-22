@@ -119,7 +119,7 @@
 
                 <!-- bottom -->
                 <div class="mt-2">
-                    <h1 class="font-semibold text-indigo-700 text-4xl">Rp{{number_format($totalHariIni,2,',','.'); }}</h1>
+                    <h1 class="font-semibold text-indigo-700 text-4xl">Rp{{number_format(340,2,',','.'); }}</h1>
                     <p>Total Pendapatan</p>
                 </div>                
                 <!-- end bottom -->

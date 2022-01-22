@@ -16,6 +16,9 @@ class CreateLayanansTable extends Migration
         Schema::create('layanans', function (Blueprint $table) {
             $table->id();
             $table->string('nama_layanan');
+            $table->bigInteger('jenis_id')->unsigned()->index();
+            $table->foreign('jenis_id')->references('id')->on('jenis_mobils')->onDelete('cascade');
+            $table->integer('harga');
             $table->timestamps();
         });
     }
