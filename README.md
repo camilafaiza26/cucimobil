@@ -36,3 +36,6 @@ To create a director account via seeder
 ```shell
 php artisan db:seed --class=AdminUserSeeder
 ```
+Pembagian 
+Camila Faiza :  Dashboard, Pemesanan, Pembayaran, Pelanggan, Riwayat Transaksi
+Nadilla Saraswati :  Data Master ( Paket, Layanan, Merek, Jenis, Paket Layanan (Pivot Table)
