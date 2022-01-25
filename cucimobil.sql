@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 14, 2022 at 05:35 PM
+-- Generation Time: Jan 25, 2022 at 03:01 PM
 -- Server version: 10.4.6-MariaDB
 -- PHP Version: 7.3.8
 
@@ -21,20 +21,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `cucimobil`
 --
-
--- --------------------------------------------------------
-
---
--- Table structure for table `detail_pakets`
---
-
-CREATE TABLE `detail_pakets` (
-  `id_detail_paket` bigint(20) UNSIGNED NOT NULL,
-  `layanan_id` bigint(20) UNSIGNED NOT NULL,
-  `paket_id` bigint(20) UNSIGNED NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -82,6 +68,8 @@ INSERT INTO `jenis_mobils` (`id`, `nama_jenis`, `created_at`, `updated_at`) VALU
 CREATE TABLE `layanans` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `nama_layanan` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `jenis_id` bigint(20) UNSIGNED NOT NULL,
+  `harga` int(11) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -90,9 +78,32 @@ CREATE TABLE `layanans` (
 -- Dumping data for table `layanans`
 --
 
-INSERT INTO `layanans` (`id`, `nama_layanan`, `created_at`, `updated_at`) VALUES
-(1, 'Cuci luar', '2021-12-20 17:00:00', '2021-12-14 17:00:00'),
-(2, 'Cuci Dalam', '2022-01-14 09:33:03', '2022-01-14 09:33:03');
+INSERT INTO `layanans` (`id`, `nama_layanan`, `jenis_id`, `harga`, `created_at`, `updated_at`) VALUES
+(1, 'Cuci luar', 2, 250000, '2022-01-20 17:00:00', '2022-01-20 17:00:00'),
+(2, 'Mengeringkan', 1, 70000, '2022-01-20 22:53:24', '2022-01-20 22:53:24'),
+(3, 'Cuci Dalam', 2, 900000, '2022-01-21 02:07:33', '2022-01-21 02:07:33');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `layanan_paket`
+--
+
+CREATE TABLE `layanan_paket` (
+  `id_detail_paket` bigint(20) UNSIGNED NOT NULL,
+  `layanan_id` bigint(20) UNSIGNED NOT NULL,
+  `paket_id` bigint(20) UNSIGNED NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `layanan_paket`
+--
+
+INSERT INTO `layanan_paket` (`id_detail_paket`, `layanan_id`, `paket_id`, `created_at`, `updated_at`) VALUES
+(14, 1, 7, NULL, NULL),
+(15, 3, 7, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -112,8 +123,8 @@ CREATE TABLE `mereks` (
 --
 
 INSERT INTO `mereks` (`id`, `nama_merek`, `created_at`, `updated_at`) VALUES
-(1, 'Toyota', '2021-12-27 17:00:00', '2021-12-21 17:00:00'),
-(2, 'Honda', '2022-01-14 09:33:22', '2022-01-14 09:33:49');
+(1, 'Toyota', '2022-01-20 22:44:16', '2022-01-20 22:44:24'),
+(2, 'Honda', '2022-01-20 22:44:31', '2022-01-20 22:44:31');
 
 -- --------------------------------------------------------
 
@@ -142,11 +153,12 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (14, '2021_12_20_143800_create_jenis_mobils_table', 2),
 (15, '2021_12_20_143844_create_layanans_table', 2),
 (16, '2021_12_20_143913_create_pakets_table', 3),
-(17, '2021_12_20_144339_create_mereks_table', 4),
 (18, '2021_12_20_144415_create_pemesanas_table', 4),
-(19, '2022_01_14_161046_create_pakets_table', 5),
-(20, '2022_01_14_161216_create_detail_pakets_table', 5),
-(21, '2022_01_14_161509_create_pemesanans_table', 6);
+(22, '2022_01_21_054140_create_mereks_table', 5),
+(23, '2022_01_21_054207_create_layanans_table', 5),
+(24, '2022_01_21_054226_create_pakets_table', 5),
+(25, '2022_01_21_054255_create_detail_pakets_table', 5),
+(26, '2022_01_21_054316_create_pemesanans_table', 5);
 
 -- --------------------------------------------------------
 
@@ -157,11 +169,18 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 CREATE TABLE `pakets` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `nama_paket` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `jenis_id` bigint(20) UNSIGNED NOT NULL,
-  `harga` double NOT NULL,
+  `diskon` int(11) NOT NULL,
+  `harga_paket` int(11) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `pakets`
+--
+
+INSERT INTO `pakets` (`id`, `nama_paket`, `diskon`, `harga_paket`, `created_at`, `updated_at`) VALUES
+(7, 'Paket CWA', 50, 575000, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -174,6 +193,13 @@ CREATE TABLE `password_resets` (
   `token` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `password_resets`
+--
+
+INSERT INTO `password_resets` (`email`, `token`, `created_at`) VALUES
+('camilafaizam@gmail.com', '$2y$10$9sFlRfLsyujvm3pfQauS2eR1xyTzjwXuYxKURSBtPfrapm1No6GFO', '2022-01-21 04:03:45');
 
 -- --------------------------------------------------------
 
@@ -211,13 +237,20 @@ CREATE TABLE `pemesanans` (
   `paket_id` bigint(20) UNSIGNED NOT NULL,
   `merek_id` bigint(20) UNSIGNED NOT NULL,
   `user_id` bigint(20) UNSIGNED NOT NULL,
-  `no_antrian` int(11) NOT NULL,
   `plat` varchar(8) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `status_bayar` tinyint(1) NOT NULL,
   `tanggal_pemesanan` date NOT NULL,
+  `status_bayar` tinyint(1) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `pemesanans`
+--
+
+INSERT INTO `pemesanans` (`id`, `pelanggan_id`, `paket_id`, `merek_id`, `user_id`, `plat`, `tanggal_pemesanan`, `status_bayar`, `created_at`, `updated_at`) VALUES
+(3, 1, 7, 1, 1, 'BA1847QI', '2022-01-21', 1, '2022-01-21 13:53:48', '2022-01-21 13:53:48'),
+(4, 3, 7, 1, 1, 'BA1821SI', '2022-01-22', 1, '2022-01-22 02:39:50', '2022-01-22 02:39:50');
 
 -- --------------------------------------------------------
 
@@ -257,7 +290,7 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('rYa7LZa6NjHWJ9P4MgCbplFLO6ZkE3dfRkI3F0fR', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36', 'YTo3OntzOjY6Il90b2tlbiI7czo0MDoiT0lKaGxiNFU5UDdOcERVWE9OQWdxaW95TVN2OXZoM0hwdFFMTHdIayI7czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MTtzOjE3OiJwYXNzd29yZF9oYXNoX3dlYiI7czo2MDoiJDJ5JDEwJHZwbGNnamR1TDF5LlpSbC4wYlZwRi5TZWU3TGVSbUh6LndyUlJRNkNMQ05qNXBkc2Jrcy4uIjtzOjk6Il9wcmV2aW91cyI7YToxOntzOjM6InVybCI7czozMzoiaHR0cDovLzEyNy4wLjAuMTo4MDAwL2plbmlzX21vYmlsIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czoyMToicGFzc3dvcmRfaGFzaF9zYW5jdHVtIjtzOjYwOiIkMnkkMTAkdnBsY2dqZHVMMXkuWlJsLjBiVnBGLlNlZTdMZVJtSHoud3JSUlE2Q0xDTmo1cGRzYmtzLi4iO3M6NToiYWxlcnQiO2E6MDp7fX0=', 1642178041);
+('07fUVtirSQTL0I2YQz6UJeX07Uw2iSi0tmCiRHke', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.99 Safari/537.36', 'YTo3OntzOjY6Il90b2tlbiI7czo0MDoiRWJraWhqemtMWXFwSmNQOEdoTmhyVEl2T2ZURHQ0S2t6OHhndEJBaSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzY6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9sYXBvcmFuYnVsYW5hbiI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjE7czoxNzoicGFzc3dvcmRfaGFzaF93ZWIiO3M6NjA6IiQyeSQxMCR2cGxjZ2pkdUwxeS5aUmwuMGJWcEYuU2VlN0xlUm1Iei53clJSUTZDTENOajVwZHNia3MuLiI7czoyMToicGFzc3dvcmRfaGFzaF9zYW5jdHVtIjtzOjYwOiIkMnkkMTAkdnBsY2dqZHVMMXkuWlJsLjBiVnBGLlNlZTdMZVJtSHoud3JSUlE2Q0xDTmo1cGRzYmtzLi4iO3M6NToiYWxlcnQiO2E6MDp7fX0=', 1643119028);
 
 -- --------------------------------------------------------
 
@@ -289,21 +322,13 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `username`, `nohp`, `alamat`, `isDirectur`, `email_verified_at`, `password`, `two_factor_secret`, `two_factor_recovery_codes`, `remember_token`, `current_team_id`, `profile_photo_path`, `created_at`, `updated_at`) VALUES
-(1, 'direktur', 'direktur@gmail.com', 'direktur26', '08123456789', 'Andalas', 1, NULL, '$2y$10$vplcgjduL1y.ZRl.0bVpF.See7LeRmHz.wrRRQ6CLCNj5pdsbks..', NULL, NULL, 'UXABk7O9vAMh43naLMKSM3NXUaRFqLa3sCt9h5yh2nJxKXhlSrXNOvtTfJ8J', NULL, NULL, '2021-12-19 14:59:36', '2021-12-19 14:59:36'),
-(2, 'Saras', 'saras@gmail.com', 'saras02', '08373883838', 'Jl. Gatau', 0, NULL, '$2y$10$zVLXk.Yev66Nn2VRyqxWQuyuDt2pUfBhS8RPbG2zA.VYuTos7Ukkq', NULL, NULL, NULL, NULL, NULL, '2021-12-20 06:52:45', '2021-12-20 06:52:45'),
+(1, 'direktur', 'direktur@gmail.com', 'direktur26', '08123456789', 'Andalas', 1, NULL, '$2y$10$vplcgjduL1y.ZRl.0bVpF.See7LeRmHz.wrRRQ6CLCNj5pdsbks..', NULL, NULL, 'McDcBNjlpSo2tILqhDCMKeGMfQp1x4RMNHmtfF39co9iNoF6g864e0hGRVC2', NULL, 'profile-photos/HPc6ecwziwZqXLG0oZxOaWzUEN6KtN2k1lIOZuuV.png', '2021-12-19 14:59:36', '2022-01-16 11:37:15'),
+(2, 'Saras', 'saras@gmail.com', 'saras02', '08373883838', 'Jl. Gatau', 0, NULL, '$2y$10$zVLXk.Yev66Nn2VRyqxWQuyuDt2pUfBhS8RPbG2zA.VYuTos7Ukkq', NULL, NULL, NULL, NULL, NULL, '2021-12-20 06:52:45', '2022-01-19 10:43:54'),
 (3, 'Camila Faiza', 'camilafaizam@gmail.com', 'camilafaizams', '08373883838', 'Jl.Batuang Taba no 14 rt01 rw03', 0, NULL, '$2y$10$kR8aOr3f0VIEb2I./B5/jeDJFVLfq04xvh89vyROK1LtXUpznEyaC', NULL, NULL, NULL, NULL, NULL, '2021-12-20 07:02:52', '2021-12-20 07:10:24');
 
 --
 -- Indexes for dumped tables
 --
-
---
--- Indexes for table `detail_pakets`
---
-ALTER TABLE `detail_pakets`
-  ADD PRIMARY KEY (`id_detail_paket`),
-  ADD KEY `detail_pakets_layanan_id_index` (`layanan_id`),
-  ADD KEY `detail_pakets_paket_id_index` (`paket_id`);
 
 --
 -- Indexes for table `failed_jobs`
@@ -322,7 +347,16 @@ ALTER TABLE `jenis_mobils`
 -- Indexes for table `layanans`
 --
 ALTER TABLE `layanans`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `layanans_jenis_id_index` (`jenis_id`);
+
+--
+-- Indexes for table `layanan_paket`
+--
+ALTER TABLE `layanan_paket`
+  ADD PRIMARY KEY (`id_detail_paket`),
+  ADD KEY `detail_pakets_layanan_id_index` (`layanan_id`),
+  ADD KEY `detail_pakets_paket_id_index` (`paket_id`);
 
 --
 -- Indexes for table `mereks`
@@ -340,8 +374,7 @@ ALTER TABLE `migrations`
 -- Indexes for table `pakets`
 --
 ALTER TABLE `pakets`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `pakets_jenis_id_index` (`jenis_id`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `password_resets`
@@ -394,12 +427,6 @@ ALTER TABLE `users`
 --
 
 --
--- AUTO_INCREMENT for table `detail_pakets`
---
-ALTER TABLE `detail_pakets`
-  MODIFY `id_detail_paket` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT for table `failed_jobs`
 --
 ALTER TABLE `failed_jobs`
@@ -409,13 +436,19 @@ ALTER TABLE `failed_jobs`
 -- AUTO_INCREMENT for table `jenis_mobils`
 --
 ALTER TABLE `jenis_mobils`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `layanans`
 --
 ALTER TABLE `layanans`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `layanan_paket`
+--
+ALTER TABLE `layanan_paket`
+  MODIFY `id_detail_paket` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `mereks`
@@ -427,25 +460,25 @@ ALTER TABLE `mereks`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `pakets`
 --
 ALTER TABLE `pakets`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `pelanggans`
 --
 ALTER TABLE `pelanggans`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `pemesanans`
 --
 ALTER TABLE `pemesanans`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `personal_access_tokens`
@@ -457,24 +490,24 @@ ALTER TABLE `personal_access_tokens`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Constraints for dumped tables
 --
 
 --
--- Constraints for table `detail_pakets`
+-- Constraints for table `layanans`
 --
-ALTER TABLE `detail_pakets`
-  ADD CONSTRAINT `detail_pakets_layanan_id_foreign` FOREIGN KEY (`layanan_id`) REFERENCES `layanans` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `detail_pakets_paket_id_foreign` FOREIGN KEY (`paket_id`) REFERENCES `pakets` (`id`) ON DELETE CASCADE;
+ALTER TABLE `layanans`
+  ADD CONSTRAINT `layanans_jenis_id_foreign` FOREIGN KEY (`jenis_id`) REFERENCES `jenis_mobils` (`id`) ON DELETE CASCADE;
 
 --
--- Constraints for table `pakets`
+-- Constraints for table `layanan_paket`
 --
-ALTER TABLE `pakets`
-  ADD CONSTRAINT `pakets_jenis_id_foreign` FOREIGN KEY (`jenis_id`) REFERENCES `jenis_mobils` (`id`) ON DELETE CASCADE;
+ALTER TABLE `layanan_paket`
+  ADD CONSTRAINT `detail_pakets_layanan_id_foreign` FOREIGN KEY (`layanan_id`) REFERENCES `layanans` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `detail_pakets_paket_id_foreign` FOREIGN KEY (`paket_id`) REFERENCES `pakets` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `pemesanans`
