@@ -25,40 +25,46 @@ class PemesananController extends Controller
         $sudahBayarNow = Pemesanan::where('status_bayar',1)->where('tanggal_pemesanan',$tanggalSekarang )->count();
         $belumBayarNow = Pemesanan::where('status_bayar',0)->where('tanggal_pemesanan',$tanggalSekarang )->count();
         $pemesananHariIni = Pemesanan::where('tanggal_pemesanan',$tanggalSekarang )->count();
-        // $totalHariIni = Pemesanan::select('pakets.harga')
-        // ->join('pakets', 'pakets.id','=', 'pemesanans.paket_id')
-        // ->where('pemesanans.status_bayar',1)
-        // ->where('pemesanans.tanggal_pemesanan',$tanggalSekarang );
+        $totalHariIni = Pemesanan::select('pakets.harga_paket')
+        ->join('pakets', 'pakets.id','=', 'pemesanans.paket_id')
+        ->where('pemesanans.status_bayar',1)
+        ->where('pemesanans.tanggal_pemesanan',$tanggalSekarang )->sum('pakets.harga_paket');
         return view('pages.user.pemesanan-data', [
             'pemesanan' => Pemesanan::class,
             'sudahBayarNow' => $sudahBayarNow,
             'belumBayarNow' => $belumBayarNow,
             'pemesananHariIni' =>   $pemesananHariIni,
-            // 'totalHariIni' => $totalHariIni,
+            'totalHariIni' => $totalHariIni,
            
         ]);
     }
 
     public function bayar_view ($id){
-        $pemesanan = Pemesanan::find($id)->select('pemesanans.*','pelanggans.nama','mereks.nama_merek','pakets.nama_paket','users.name')
+        $pemesanan = Pemesanan::select('pemesanans.*','pelanggans.nama','mereks.nama_merek','pakets.nama_paket','users.name')
         ->join('pelanggans','pelanggans.id', '=', 'pemesanans.pelanggan_id')
         ->join('mereks','mereks.id', '=', 'pemesanans.merek_id')
         ->join('pakets','pakets.id', '=', 'pemesanans.paket_id')
         ->join('users','users.id', '=', 'pemesanans.user_id')
+        ->where('pemesanans.id', $id)
         ->get();
-        $layanans =  Pemesanan::find($id)->select('pemesanans.paket_id', 'layanans.nama_layanan', 'jenis_mobils.nama_jenis', 'layanans.harga')
+        $layanans =  Pemesanan::select('pemesanans.paket_id', 'layanans.nama_layanan', 'jenis_mobils.nama_jenis', 'layanans.harga')
         ->join('layanan_paket', 'layanan_paket.paket_id' , '=', 'pemesanans.paket_id')
         ->join('layanans','layanans.id', '=', 'layanan_paket.layanan_id')
         ->join('jenis_mobils','jenis_mobils.id', '=', 'layanans.jenis_id')
+        ->where('pemesanans.id', $id)
         ->get();
-        $totals = Pemesanan::find($id)->select('pakets.harga_paket', 'pakets.diskon')
+        $totals = Pemesanan::select('pakets.harga_paket', 'pakets.diskon')
         ->join('pakets','pakets.id', '=', 'pemesanans.paket_id')
+        ->where('pemesanans.id', $id)
         ->first();
-        $bayar = Pemesanan::find($id)->select('pemesanans.status_bayar')
+        $bayar = Pemesanan::select('pemesanans.status_bayar')
+        ->where('pemesanans.id', $id)
         ->first();
-        $totalAwalLayanan = Pemesanan::find($id)->select('layanans.harga')
+        $totalAwalLayanan = Pemesanan::select('layanans.harga')
         ->join('layanan_paket','layanan_paket.paket_id', '=' ,'pemesanans.paket_id')
-        ->join('layanans', 'layanans.id', '=', 'layanan_paket.layanan_id')->sum('layanans.harga');
+        ->join('layanans', 'layanans.id', '=', 'layanan_paket.layanan_id')
+        ->where('pemesanans.id', $id)
+        ->sum('layanans.harga');
 
         return view('pages.user.bayar-data', [
            'id' => $id,
@@ -94,25 +100,32 @@ class PemesananController extends Controller
     public function cetak_struk($pemesananId){
 
         $id = $pemesananId;
-        $pemesanan = Pemesanan::find($id)->select('pemesanans.*','pelanggans.nama','mereks.nama_merek','pakets.nama_paket','users.name')
+        $pemesanan = Pemesanan::select('pemesanans.*','pelanggans.nama','mereks.nama_merek','pakets.nama_paket','users.name')
         ->join('pelanggans','pelanggans.id', '=', 'pemesanans.pelanggan_id')
         ->join('mereks','mereks.id', '=', 'pemesanans.merek_id')
         ->join('pakets','pakets.id', '=', 'pemesanans.paket_id')
         ->join('users','users.id', '=', 'pemesanans.user_id')
+        ->where('pemesanans.id', $id)
         ->first();
-        $layanans =  Pemesanan::find($id)->select('pemesanans.paket_id', 'layanans.nama_layanan', 'jenis_mobils.nama_jenis', 'layanans.harga')
+        $layanans =  Pemesanan::select('pemesanans.paket_id', 'layanans.nama_layanan', 'jenis_mobils.nama_jenis', 'layanans.harga')
         ->join('layanan_paket', 'layanan_paket.paket_id' , '=', 'pemesanans.paket_id')
         ->join('layanans','layanans.id', '=', 'layanan_paket.layanan_id')
         ->join('jenis_mobils','jenis_mobils.id', '=', 'layanans.jenis_id')
+        ->where('pemesanans.id', $id)
         ->get();
-        $totals = Pemesanan::find($id)->select('pakets.harga_paket','pakets.harga_paket')
+        $totals = Pemesanan::select('pakets.harga_paket','pakets.harga_paket')
         ->join('pakets','pakets.id', '=', 'pemesanans.paket_id')
+        ->where('pemesanans.id', $id)
         ->first();
-        $bayar = Pemesanan::find($id)->select('pemesanans.status_bayar')
+        $bayar = Pemesanan::select('pemesanans.status_bayar')
+        ->where('pemesanans.id', $id)
         ->first();
-        $totalAwalLayanan = Pemesanan::find($id)->select('layanans.harga')
+        $totalAwalLayanan = Pemesanan::select('layanans.harga')
         ->join('layanan_paket','layanan_paket.paket_id', '=' ,'pemesanans.paket_id')
-        ->join('layanans', 'layanans.id', '=', 'layanan_paket.layanan_id')->sum('layanans.harga');
+        ->join('layanans', 'layanans.id', '=', 'layanan_paket.layanan_id')
+        ->where('pemesanans.id', $id)
+        ->sum('layanans.harga');
+        
 
 
         $pdf = \PDF::loadView('pages.user.export.cetak_struk',

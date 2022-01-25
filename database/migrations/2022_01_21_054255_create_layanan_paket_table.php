@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePaketLayananTable extends Migration
+class CreateLayananPaketTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreatePaketLayananTable extends Migration
      */
     public function up()
     {
-        Schema::create('paket_layanan', function (Blueprint $table) {
+        Schema::create('layanan_paket', function (Blueprint $table) {
             $table->id('id_detail_paket');
             $table->bigInteger('layanan_id')->unsigned()->index();
             $table->foreign('layanan_id')->references('id')->on('layanans')->onDelete('cascade');
@@ -30,6 +30,6 @@ class CreatePaketLayananTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('paket_layanan');
+        Schema::dropIfExists('layanan_paket');
     }
 }

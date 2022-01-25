@@ -23,7 +23,7 @@ class Main extends Component
     public $sortField = "id";
     public $sortAsc = false;
     public $search = '';
-    public $status;
+    public $status= '0';
     public $bayarPesanan = false;
     public $pelangganId;
     public $harga;

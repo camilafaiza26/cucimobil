@@ -42,7 +42,7 @@ $links = [
                 "icon" => "fas fa-book",
                 "section_list" => [
                     ["href" => "laporanharian", "text" => "Laporan Harian"],
-                    ["href" => "merek", "text" => "Laporan Bulanan"],
+                    ["href" => "laporanbulanan", "text" => "Laporan Bulanan"],
                 ]
             ]
         ],

@@ -1,7 +1,10 @@
 <?php
 
+use App\Http\Controllers\Dashboard;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\JenisController;
-use App\Http\Controllers\LaporanHarianController;
+use App\Http\Controllers\LaporanController;
+use App\Http\Controllers\LaporanHarian;
 use App\Http\Controllers\LayananController;
 use App\Http\Controllers\MerekController;
 use App\Http\Controllers\PelangganController;
@@ -9,7 +12,6 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\PaketController;
 use App\Http\Livewire\Users;
 use App\Http\Controllers\PemesananController;
-use App\Http\Livewire\LaporanHarian;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,7 +30,7 @@ Route::get('/', function () {
 });
 
 Route::group([ "middleware" => ['auth:sanctum', 'verified'] ], function() {
-    Route::view('/dashboard', "dashboard")->name('dashboard');
+    Route::get('/dashboard', [ DashboardController::class, "index_view" ])->name('dashboard');
 
     Route::get('/user', [ UserController::class, "index_view" ])->name('user');
     Route::view('/user/new', "pages.user.user-new")->name('user.new');
@@ -65,5 +67,6 @@ Route::group([ "middleware" => ['auth:sanctum', 'verified'] ], function() {
 
 
     //Laporan
-    Route::get('/laporanharian', [LaporanHarianController::class, "index_view"])->name('laporanharian');
+    Route::get('/laporanharian', [LaporanController::class, "index_view"])->name('laporanharian');
+    Route::get('/laporanbulanan', [LaporanController::class, "index_view_bulanan"])->name('laporanbulanan');
 });

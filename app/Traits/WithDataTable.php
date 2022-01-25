@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use App\Models\Pelanggan;
 
 trait WithDataTable {
     
@@ -44,20 +45,19 @@ trait WithDataTable {
                         ])
                     ];
                     case 'riwayat':
-                        $nama =   $this->model::select('*') ->where('pelanggans.id', $this->pelangganId)->first();
-                        $pelanggans = $this->model::search($this->search)
-                            ->select('pelanggans.id','pemesanans.plat', 'pakets.nama_paket', 'mereks.nama_merek','pemesanans.tanggal_pemesanan', 'jenis_mobils.nama_jenis','pemesanans.status_bayar')
-                            ->join('pemesanans', 'pemesanans.pelanggan_id', '=','pelanggans.id' )
-                            ->join('pakets', 'pemesanans.paket_id', '=','pakets.id' )
-                            ->join('jenis_mobils', 'pakets.jenis_id', '=','jenis_mobils.id' )
-                            ->join('mereks', 'pemesanans.merek_id', '=','mereks.id' )
-                            ->where('pelanggans.id', $this->pelangganId)
+                        $nama =   Pelanggan::select('*') ->where('pelanggans.id', $this->pelangganId)->first();
+                        $pakets = $this->model::search($this->search)
+                            ->select('pemesanans.id as pemesanan_id', 'pakets.*', 'pemesanans.tanggal_pemesanan', 'pemesanans.plat', 'mereks.nama_merek','pemesanans.status_bayar')
+                            ->join('pemesanans', 'pemesanans.paket_id', '=', 'pakets.id')
+                            ->join('pelanggans', 'pelanggans.id' , '=', 'pemesanans.pelanggan_id')
+                            ->join('mereks', 'pemesanans.merek_id', '=', 'mereks.id')
+                            ->where('pemesanans.pelanggan_id', $this->pelangganId)
                             ->orderBy($this->sortField, $this->sortAsc ? 'asc' : 'desc')
                             ->paginate($this->perPage);
         
                         return [
                             "view" => 'livewire.table.riwayat',
-                            "pelanggans" => $pelanggans,
+                            "pakets" => $pakets,
                             "nama" => $nama,
                             "data" => array_to_object([
                                 'href' => [
@@ -169,6 +169,8 @@ trait WithDataTable {
                                 break;
                                 case 'harian':
                                     $harians = $this->model::search($this->search)
+                                        ->select('pemesanans.*', 'pakets.nama_paket', 'pakets.harga_paket')
+                                        ->join('pakets', 'pakets.id','=','pemesanans.paket_id')
                                         ->orderBy($this->sortField, $this->sortAsc ? 'asc' : 'desc')
                                         ->paginate($this->perPage);
                     
@@ -177,6 +179,18 @@ trait WithDataTable {
                                         "harians" => $harians,
                                     ];
                                     break;
+                                    case 'bulanan':
+                                        $bulanans = $this->model::search($this->search)
+                                            ->select('pemesanans.*', 'pakets.nama_paket', 'pakets.harga_paket')
+                                            ->join('pakets', 'pakets.id','=','pemesanans.paket_id')
+                                            ->orderBy($this->sortField, $this->sortAsc ? 'asc' : 'desc')
+                                            ->paginate($this->perPage);
+                        
+                                        return [
+                                            "view" => 'livewire.table.bulanan',
+                                            "bulanans" => $bulanans,
+                                        ];
+                                        break;
 
             default:
                 # code...

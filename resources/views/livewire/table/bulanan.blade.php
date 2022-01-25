@@ -8,24 +8,56 @@
 <div>
     <div class="bg-gray-100 text-gray-900 tracking-wider leading-normal">
         <div class="p-8 pt-4 mt-2 bg-white">      
-            <p class="mb-4">Laporan Harian Tanggal </p>
+            <p class="mb-4">Laporan Bulanan </p>
             <div class="">
                 <table class="table w-auto -ml-3">
                     </thead>
                     <tbody>
                         <tr> 
                             <td>
-                        <div class="row">
-                            <div class="col-xs-2">
-                                <label for="min">Tanggal Awal : </label>
-                                <input type="text" class="form-control" id="min" name="min" >
+                           
+                          
+                                <div class="mb-3 xl:w-96">
+                                <label for="min">Pilih Bulan </label>
+                                <select class="form-select appearance-none
+                                block
+                                w-full
+                                px-3
+                                py-1.5
+                                text-base
+                                font-normal
+                                text-gray-700
+                                bg-white bg-clip-padding bg-no-repeat
+                                border border-solid border-gray-300
+                                rounded
+                                transition
+                                ease-in-out
+                                m-0
+                                focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" aria-label="Default select example">
+                                  <option selected>Pilih Bulan</option>
+                                  <option value="01">Januari</option>
+                                  <option value="02">Februari</option>
+                                  <option value="03">Maret</option>
+                                  <option value="04">April</option>
+                                  <option value="05">Mei</option>
+                                  <option value="06">Juni</option>
+                                  <option value="07">Juli</option>
+                                  <option value="08">Agustus</option>
+                                  <option value="09">September</option>
+                                  <option value="10">Oktober</option>
+                                  <option value="11">November</option>
+                                  <option value="12">Desember</option>
+                              </select>
                             </div>
-                            <div class=" ml-2 col-xs-2">
-                                <label for="max">Tanggal Akhir : </label>
-                                <input type="text" class="form-control" id="max" name="max" >
-                            </div>
-                          </div>
+                            
+                            
+                          
                             </td>
+                        <td>
+                            <a  href="" class=" text-blue-700 font-semibold  py-2 px-4 border border-blue-500 rounded-full transform transition duration-500 hover:scale-110">
+                                 Cetak Laporan
+                            </a>
+                        </td>
                         </tr>
                     </tbody>
                 </table>
@@ -41,12 +73,12 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($harians as $harian)
+                        @foreach($bulanans as $bulanans)
                         <tr>
-                            <td>{{$harian->id}}</td>
-                            <td>{{$harian->tanggal_pemesanan}}</td>
-                            <td>{{$harian->nama_paket}}</td>
-                            <td>{{$harian->harga_paket}}</td>
+                            <td>{{$bulanans->id}}</td>
+                            <td>{{$bulanans->tanggal_pemesanan}}</td>
+                            <td>{{$bulanans->nama_paket}}</td>
+                            <td>{{$bulanans->harga_paket}}</td>
                         </tr>
                         @endforeach
                     </tbody>
@@ -92,34 +124,34 @@
 $(document).ready(function() {
        
 
-            $('#table_id').append('<caption style="caption-side: bottom">Laporan Harian Cuci Mobil</caption>');
+            $('#table_id').append('<caption style="caption-side: bottom">Laporan Bulanan Cuci Mobil</caption>');
             var table = $('#table_id').DataTable( {
                 buttons: [ 'copy',
                 {
                 extend: 'csv',
-                messageTop: 'Laporan Harian',
+                messageTop: 'Laporan bulanans',
                 title: function() {
-                  return 'Laporan Harian Cuci Mobil' + $("#min").val() + ' - ' + $("#max").val();
+                  return 'Laporan bulanans Cuci Mobil' + $("#min").val() + ' - ' + $("#max").val();
                  }
                  },
                 {
                 extend: 'print',
-                messageTop: 'Laporan Harian',
+                messageTop: 'Laporan bulanans',
                 title: function() {
-                  return 'Laporan Harian Cuci Mobil' + $("#min").val() + ' - ' + $("#max").val();
+                  return 'Laporan bulanans Cuci Mobil' + $("#min").val() + ' - ' + $("#max").val();
                  }
                  },
                 {
                 extend: 'excel',
-                messageTop: 'Laporan Harian',
+                messageTop: 'Laporan bulanans',
                 title: function() {
-                  return 'Laporan Harian Cuci Mobil' + $("#min").val() + ' - ' + $("#max").val();
+                  return 'Laporan bulanan Cuci Mobil' + $("#min").val() + ' - ' + $("#max").val();
                  }
                  },
                  {
                 extend: 'pdf',
                 title: function() {
-                  return 'Laporan Harian Cuci Mobil' + $("#min").val() + ' - ' + $("#max").val();
+                  return 'Laporan bulanans Cuci Mobil' + $("#min").val() + ' - ' + $("#max").val();
                  }
                  }, 
                 'colvis' ],
@@ -136,48 +168,6 @@ $(document).ready(function() {
             table.buttons().container()
                 .appendTo( '#table_wrapper .col-md-5:eq(0)' );
         } );
-
-       var minDate, maxDate;
-
- // Custom filtering function which will search data in column four between two values
- $.fn.dataTable.ext.search.push(
-     function( settings, data, dataIndex ) {
-         var min = minDate.val();
-         var max = maxDate.val();
-         var date = new Date( data[1] );
-         console.log(date)
-  
-         if (
-             ( min === null && max === null ) ||
-             ( min === null && date <= max ) ||
-             ( min <= date   && max === null ) ||
-             ( min <= date   && date <= max )
-         ) {
-             return true;
-         }
-         return false;
-     }
- );
-  
- $(document).ready(function() {
-     // Create date inputs
-     minDate = new DateTime($('#min'), {
-         format: 'MMMM Do YYYY'
-     });
-     maxDate = new DateTime($('#max'), {
-         format: 'MMMM Do YYYY'
-     });
-  
-     // DataTables initialisation
-     var table = $('#table_id').DataTable();
-  
-     // Refilter the table
-     $('#min, #max').on('change', function () {
-         table.draw();
-     });
- });
-
- 
 
     </script>
     @endpush

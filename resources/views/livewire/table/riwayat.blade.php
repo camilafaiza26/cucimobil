@@ -25,7 +25,7 @@
         </div>
     </div>
 
-    <x-data-table :data="$data" :model="$pelanggans">
+    <x-data-table :data="$data" :model="$pakets">
         <x-slot name="head">
             <tr>
                 <th><a wire:click.prevent="sortBy('id')" role="button" href="#">
@@ -45,7 +45,7 @@
                      @include('components.sort-icon', ['field' => 'harga'])
                  </a></th>
                  <th><a wire:click.prevent="sortBy('harga')" role="button" href="#">
-                   Jenis Mobil
+                   Layanan
                      @include('components.sort-icon', ['field' => 'harga'])
                  </a></th>
                  <th><a wire:click.prevent="sortBy('harga')" role="button" href="#">
@@ -64,23 +64,30 @@
             </tr>
         </x-slot>
         <x-slot name="body">
-            @foreach ($pelanggans as $pelanggan)
-                <tr x-data="window.__controller.dataTableController({{ $pelanggan->id }})">
+            @foreach ($pakets as $paket)
+                <tr x-data="window.__controller.dataTableController({{ $paket->pemesanan_id }})">
                     <td>{{ $loop->iteration }}</td>
-                    <td>{{$pelanggan->tanggal_pemesanan}}</td>
-                    <td>{{$pelanggan->plat}}</td>
-                    <td>{{$pelanggan->nama_paket}}</td>
-                    <td>{{$pelanggan->nama_jenis}}</td>
-                    <td>{{$pelanggan->nama_merek}}</td>
-                    <td>Rp{{ number_format($pelanggan->harga,0,',','.') }}</td>
-                    @if ($pelanggan->status_bayar == 0)
+                    <td>{{$paket->tanggal_pemesanan}}</td>
+                    <td>{{$paket->plat}}</td>
+                    <td>{{$paket->nama_paket}}</td>
+                    <td class="px-6 py-4 text-sm text-gray-900 text-center">
+                        @foreach ($paket->layanan as $detail_paket)
+                        <span class="bg-gray-200 text-xs font-normal px-2 py-px border rounded-full inline-flex my-px">
+                            {{ $detail_paket->nama_layanan }}
+                        </span>
+                    @endforeach
+                    </td>
+
+                    <td>{{$paket->nama_merek}}</td>
+                    <td>Rp{{ number_format($paket->harga_paket,0,',','.') }}</td>
+                    @if ($paket->status_bayar == 0)
                         
                     <td class="text-center"><span class="bg-red-600 text-white py-2 px-3 rounded-full ">  Belum Bayar <span></td>
                         
                     @else
-                    <td class="text-center"><button class=" text-blue-700 font-semibold  py-2 px-4 border border-blue-500 rounded-full transform transition duration-500 hover:scale-110">
+                    <td class="text-center"><a  href="/pemesanan/bayar/{{ $paket->pemesanan_id }}" class=" text-blue-700 font-semibold  py-2 px-4 border border-blue-500 rounded-full transform transition duration-500 hover:scale-110">
                         Lihat Struk
-                      </button></td>
+                    </a></td>
                     
                     @endif                   
                 </tr>
