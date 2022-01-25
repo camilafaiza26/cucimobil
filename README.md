@@ -32,7 +32,7 @@ $ php artisan migrate
 # laravel link up storage files
 $ php artisan storage:link
 ```
-Untuk membuat akun direktur mellaui seeder 
+To create a director account via seeder
 ```shell
 php artisan db:seed --class=AdminUserSeeder
 ```
