@@ -33,4 +33,6 @@ $ php artisan migrate
 $ php artisan storage:link
 ```
 Untuk membuat akun direktur mellaui seeder 
+```shell
 php artisan db:seed --class=AdminUserSeeder
+```
